@@ -122,6 +122,24 @@ async function loginUser(username, password) {
   }
 }
 
+// logout user
+const logoutUser = async (userId) => {
+  try {
+    await prisma.token.deleteMany({
+      where: {
+        userId: userId,
+      },
+    });
+
+    console.log("Tokens associated with user deleted successfully");
+
+    return true;
+  } catch (error) {
+    console.error("Error in logoutUser function:", error);
+    return false;
+  }
+};
+
 // update user
 const updateUser = async (id, req) => {
   const { username, password, firstName, lastName, email, admin } = req.body;
@@ -179,7 +197,7 @@ const findUserByToken = async (token) => {
 
     const tokenEntry = await prisma.token.findFirst({
       where: {
-        tokens: token,
+        token: token,
         expiration: {
           gte: new Date(),
         },
@@ -204,6 +222,7 @@ module.exports = {
   getUserById,
   createNewUser,
   loginUser,
+  logoutUser,
   updateUser,
   deleteUser,
   findUserByToken,

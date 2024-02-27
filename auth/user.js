@@ -5,6 +5,7 @@ const {
   getAllUsers,
   getUserById,
   loginUser,
+  logoutUser,
   createNewUser,
   updateUser,
   deleteUser,
@@ -46,6 +47,23 @@ router.post("/user/login", async (req, res, next) => {
     res.status(200).json({ user, token });
   } catch (error) {
     res.status(401).json({ error: error.message });
+  }
+});
+// user logout
+router.delete("/user/logout", async (req, res, next) => {
+  try {
+    const userId = req.body.userId;
+
+    const loggedOut = await logoutUser(userId);
+
+    if (loggedOut) {
+      res.status(200).json({ message: "User successfully logged out" });
+    } else {
+      res.status(500).json({ error: "An error occurred during logout" });
+    }
+  } catch (error) {
+    console.error("Error in user logout:", error);
+    res.status(500).json({ error: "An error occurred during logout" });
   }
 });
 
