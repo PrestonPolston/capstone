@@ -76,10 +76,61 @@ const deleteProduct = async (req) => {
   }
 };
 
+// get reviews
+const getProductReview = async (productId) => {
+  try {
+    return await prisma.review.findMany({
+      where: {
+        productId: Number(productId),
+      },
+    });
+  } catch (err) {
+    throw err;
+  }
+};
+
+// create review
+const createProductReview = async (productId, userId, reviewData) => {
+  try {
+    const reviewDataToCreate = {
+      productId: parseInt(productId),
+      ...reviewData,
+    };
+    if (userId) {
+      reviewDataToCreate["userId"] = userId;
+    }
+    const newReview = await prisma.review.create({
+      data: reviewDataToCreate,
+    });
+    return newReview;
+  } catch (err) {
+    throw err;
+  }
+};
+
+// update a review
+const updateReview = async (reviewId, reviewData) => {
+  return await prisma.review.update({
+    where: { id: parseInt(reviewId) },
+    data: reviewData,
+  });
+};
+
+// delete a review
+const deleteReview = async (reviewId) => {
+  return await prisma.review.delete({
+    where: { id: parseInt(reviewId) },
+  });
+};
+
 module.exports = {
   getAllProducts,
   getProductById,
   createNewProduct,
   updateProduct,
   deleteProduct,
+  getProductReview,
+  createProductReview,
+  updateReview,
+  deleteReview,
 };
