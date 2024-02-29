@@ -40,6 +40,72 @@ async function main() {
     admin: true,
   });
 
+  await createIfNotExists("users", {
+    username: "john_doe",
+    password: "password123",
+    firstName: "John",
+    lastName: "Doe",
+    email: "john_doe@email.com",
+    admin: false,
+  });
+  await createIfNotExists("users", {
+    username: "jane_smith",
+    password: "password123",
+    firstName: "Jane",
+    lastName: "Smith",
+    email: "jane_smith@email.com",
+    admin: false,
+  });
+  await createIfNotExists("users", {
+    username: "alice_smith",
+    password: "password123",
+    firstName: "Alice",
+    lastName: "Smith",
+    email: "alice@email.com",
+    admin: false,
+  });
+  await createIfNotExists("users", {
+    username: "bob_james",
+    password: "password123",
+    firstName: "Bob",
+    lastName: "James",
+    email: "bob@email.com",
+    admin: false,
+  });
+
+  const reviews = [
+    {
+      content: "Great quality and durable. Highly recommended.",
+      rating: 4,
+      userId: 1,
+      productId: 1,
+    },
+    {
+      content: "Perfect for my DIY projects. Excellent product!",
+      rating: 5,
+      userId: 2,
+      productId: 2,
+    },
+    {
+      content: "Decent quality, but could be sturdier.",
+      rating: 3,
+      userId: 3,
+      productId: 3,
+    },
+    {
+      content: "Sturdy and reliable brackets. Good for construction work.",
+      rating: 4,
+      userId: 4,
+      productId: 4,
+    },
+    {
+      content: "High-grade steel nails that get the job done perfectly.",
+      rating: 5,
+      userId: 5,
+      productId: 5,
+    },
+  ];
+
   // Products data
   const products = [
     {
@@ -48,6 +114,7 @@ async function main() {
       image: toBase64("db/images/2x2AngleIron.jpeg"),
       description: "High-quality angle iron for various construction projects.",
       class: "Metal",
+      quantity: 25,
     },
     {
       name: "Metal Sheet",
@@ -55,6 +122,7 @@ async function main() {
       image: toBase64("db/images/sheet.jpeg"),
       description: "Durable metal sheet for DIY projects.",
       class: "Metal",
+      quantity: 25,
     },
     {
       name: "Metal Rod",
@@ -62,12 +130,57 @@ async function main() {
       image: toBase64("db/images/roundstock.webp"),
       description: "Flexible and sturdy metal rod for crafting.",
       class: "Metal",
+      quantity: 25,
     },
-    // more products coming soon
+    {
+      name: "Metal Brackets",
+      price: 6.49,
+      image: toBase64("db/images/metal_brackets.jpeg"),
+      description: "Sturdy metal brackets for carpentry and construction.",
+      class: "Metal",
+      quantity: 25,
+    },
+    {
+      name: "Steel Nails",
+      price: 3.99,
+      image: toBase64("db/images/steel_nails.jpeg"),
+      description: "High-grade steel nails for various projects.",
+      class: "Fasteners",
+      quantity: 25,
+    },
+    {
+      name: "Aluminum Sheets",
+      price: 12.99,
+      image: toBase64("db/images/aluminum_sheets.jpeg"),
+      description: "Lightweight aluminum sheets for crafting and roofing.",
+      class: "Metal",
+      quantity: 25,
+    },
+    {
+      name: "Flat Strap",
+      price: 8.99,
+      image: toBase64("db/images/flat_strap.jpeg"),
+      description:
+        "Strong and durable forged steel bars for industrial applications.",
+      class: "Metal",
+      quantity: 25,
+    },
+    {
+      name: "Steel Fasteners",
+      price: 5.49,
+      image: toBase64("db/images/Steel_fasteners.jpeg"),
+      description: "Rust-resistant brass fasteners for furniture assembly.",
+      class: "Fasteners",
+      quantity: 25,
+    },
   ];
 
   for (const product of products) {
     await createIfNotExists("product", product);
+  }
+
+  for (const review of reviews) {
+    await prisma.review.create({ data: review });
   }
 
   console.log("Seed data creation complete.");

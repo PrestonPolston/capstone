@@ -7,6 +7,10 @@ const {
   createNewProduct,
   updateProduct,
   deleteProduct,
+  getProductReview,
+  createProductReview,
+  updateReview,
+  deleteReview,
 } = require("../db/products");
 
 // get all products
@@ -60,5 +64,54 @@ router.delete("/products/:id", async (req, res, next) => {
     next(err);
   }
 });
+
+// get review related to product
+router.get("/products/:id/reviews", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const productReviews = await getProductReview(id);
+    res.send(productReviews);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Create a new review for a product
+router.post("/products/:productId/reviews", async (req, res, next) => {
+  try {
+    const { productId } = req.params;
+    const { userId } = req.body;
+    const reviewData = req.body;
+    const newReview = await createProductReview(productId, userId, reviewData);
+    res.status(201).json(newReview);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Update a review for a product
+router.put("/products/:productId/reviews/:reviewId", async (req, res, next) => {
+  try {
+    const { reviewId } = req.params;
+    const updatedReview = await updateReview(reviewId, req.body);
+    res.status(200).json(updatedReview);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Delete a review for a product
+router.delete(
+  "/products/:productId/reviews/:reviewId",
+  async (req, res, next) => {
+    try {
+      const { reviewId } = req.params;
+      const deletedReview = await deleteReview(reviewId);
+      res.status(200).json({ message: "Review successfully deleted." });
+    } catch (err) {
+      next(err);
+    }
+  }
+);
 
 module.exports = router;

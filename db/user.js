@@ -217,6 +217,38 @@ const findUserByToken = async (token) => {
   }
 };
 
+// get user preferences
+const getUserPreferences = async (userId) => {
+  return await prisma.userPreferences.findFirst({
+    where: { userId: parseInt(userId) },
+  });
+};
+
+// create user preferences
+const createUserPreferences = async (userId, preferencesData) => {
+  return await prisma.userPreferences.create({
+    data: {
+      userId: parseInt(userId),
+      ...preferencesData,
+    },
+  });
+};
+
+// update user preferences
+const updateUserPreferences = async (userId, preferencesData) => {
+  return await prisma.userPreferences.update({
+    where: { userId: parseInt(userId) },
+    data: preferencesData,
+  });
+};
+
+// delete user preferences
+const deleteUserPreferences = async (userId) => {
+  return await prisma.userPreferences.delete({
+    where: { userId: parseInt(userId) },
+  });
+};
+
 module.exports = {
   getAllUsers,
   getUserById,
@@ -226,4 +258,8 @@ module.exports = {
   updateUser,
   deleteUser,
   findUserByToken,
+  getUserPreferences,
+  createUserPreferences,
+  updateUserPreferences,
+  deleteUserPreferences,
 };
