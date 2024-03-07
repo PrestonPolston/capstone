@@ -2,6 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const { log } = require("console");
 
 // get all users
 const getAllUsers = async () => {
@@ -143,25 +144,29 @@ const logoutUser = async (userId) => {
 // update user
 const updateUser = async (id, req) => {
   const { username, password, firstName, lastName, email, admin } = req.body;
-  const salt = await bcrypt.genSalt(10);
-  const hashPassword = await bcrypt.hash(password, salt);
-  try {
-    const updateUser = await prisma.users.update({
-      where: {
-        id: Number(id),
-      },
-      data: {
-        username: username,
-        password: hashPassword,
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        admin: admin,
-      },
-    });
-    return updateUser;
-  } catch (err) {
-    throw err;
+  if ((password, username)) {
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(password, salt);
+    try {
+      const updateUser = await prisma.users.update({
+        where: {
+          id: Number(id),
+        },
+        data: {
+          username: username,
+          password: hashPassword,
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          admin: admin,
+        },
+      });
+      return updateUser;
+    } catch (err) {
+      throw err;
+    }
+  } else {
+    throw new Error("Password is empty");
   }
 };
 
