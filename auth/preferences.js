@@ -19,12 +19,18 @@ router.get("/user/:userId/preferences", async (req, res, next) => {
   }
 });
 
-// Create user preferences
+// Create user preferences endpoint
 router.post("/user/:userId/preferences", async (req, res, next) => {
   try {
     const { userId } = req.params;
     const preferencesData = req.body;
+
+    console.log("Received preferences data:", preferencesData);
+
     const newPreferences = await createUserPreferences(userId, preferencesData);
+
+    console.log("New preferences created:", newPreferences);
+
     res.status(201).json(newPreferences);
   } catch (err) {
     next(err);
@@ -36,11 +42,9 @@ router.put("/user/:userId/preferences", async (req, res, next) => {
   try {
     const { userId } = req.params;
     const preferencesData = req.body;
-    const updatedPreferences = await updateUserPreferences(
-      userId,
-      preferencesData
-    );
-    res.status(200).json(updatedPreferences);
+    const newPreferences = await updateUserPreferences(userId, preferencesData);
+    console.log("New preferences:", newPreferences);
+    res.status(201).json(newPreferences);
   } catch (err) {
     next(err);
   }
@@ -57,4 +61,4 @@ router.delete("/user/:userId/preferences", async (req, res, next) => {
   }
 });
 
-module.exports = router
+module.exports = router;

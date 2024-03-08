@@ -33,11 +33,11 @@ const createUserInformation = async (userId, informationData) => {
 };
 
 //update user information
-const updateUserInformation = async (userId, informationData) => {
+const updateUserInformation = async (userId, userInfo) => {
   try {
     const updatedInformation = await prisma.userInformation.update({
-      where: { userId: parseInt(userId) },
-      data: informationData,
+      where: { userId: Number(userId) },
+      data: userInfo,
     });
 
     return updatedInformation;
