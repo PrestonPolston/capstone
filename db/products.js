@@ -89,6 +89,21 @@ const getProductReview = async (productId) => {
   }
 };
 
+// get review by userId
+const getUserReviews = async (userId) => {
+  try {
+    const userReviews = await prisma.review.findMany({
+      where: {
+        userId: Number(userId), // Include the userId in the 'where' condition
+      },
+    });
+    return userReviews;
+  } catch (error) {
+    console.error("Error fetching user reviews:", error);
+    return null;
+  }
+};
+
 // create review
 const createProductReview = async (productId, userId, reviewData) => {
   try {
@@ -130,6 +145,7 @@ module.exports = {
   updateProduct,
   deleteProduct,
   getProductReview,
+  getUserReviews,
   createProductReview,
   updateReview,
   deleteReview,

@@ -31,7 +31,7 @@ model Order {
   user        Users?    @relation(fields: [userId], references: [id])
   userId      Int?
   products    Product[] @relation("ProductOrder")
-  quantity    Int
+  quantities  Int[]
   totalPrice  Float
   orderNumber String    @unique
   createdAt   DateTime  @default(now())

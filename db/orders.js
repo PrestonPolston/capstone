@@ -7,10 +7,8 @@ const getAllOrders = async () => {
 };
 
 // Get order by ID
-const getOrderById = async (orderId) => {
-  return await prisma.order.findUnique({
-    where: { id: Number(orderId) },
-  });
+const getOrdersByUserId = async (userId) => {
+  return await prisma.order.findMany({ where: { userId: Number(userId) } });
 };
 
 const createNewOrder = async (orderData) => {
@@ -28,12 +26,12 @@ const createNewOrder = async (orderData) => {
     ? { connect: { id: Number(orderData.input.user) } }
     : null;
 
+  const userId = orderData.input.user ? Number(orderData.input.user) : null;
+
   const createOrderPromise = prisma.order.create({
     data: {
-      userId: Number(userData),
-      products: {
-        connect: productConnectInputs,
-      },
+      userId: userId,
+      products: { connect: productConnectInputs },
       quantities: { set: orderData.input.quantities },
       totalPrice: orderData.input.totalPrice,
       orderNumber: orderData.input.orderNumber,
@@ -137,7 +135,7 @@ const removeProductFromOrder = async (orderId, productId) => {
 
 module.exports = {
   getAllOrders,
-  getOrderById,
+  getOrdersByUserId,
   createNewOrder,
   updateOrder,
   deleteOrder,

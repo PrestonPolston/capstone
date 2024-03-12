@@ -8,6 +8,7 @@ const {
   updateProduct,
   deleteProduct,
   getProductReview,
+  getUserReviews,
   createProductReview,
   updateReview,
   deleteReview,
@@ -71,6 +72,17 @@ router.get("/products/:id/reviews", async (req, res, next) => {
     const { id } = req.params;
     const productReviews = await getProductReview(id);
     res.send(productReviews);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Get reviews by userId
+router.get("/reviews/user/:userId", async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const userReviews = await getUserReviews(userId);
+    res.send(userReviews);
   } catch (err) {
     next(err);
   }

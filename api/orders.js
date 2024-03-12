@@ -3,7 +3,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const {
   getAllOrders,
-  getOrderById,
+  getOrdersByUserId,
   createNewOrder,
   updateOrder,
   deleteOrder,
@@ -22,11 +22,10 @@ router.get("/orders", async (req, res, next) => {
   }
 });
 
-// Get order by ID
-router.get("/orders/:id", async (req, res, next) => {
+router.get("/orders/:userId", async (req, res, next) => {
   try {
-    const order = await getOrderById(req.params.id);
-    res.send(order);
+    const orders = await getOrdersByUserId(req.params.userId);
+    res.send(orders);
   } catch (err) {
     next(err);
   }
