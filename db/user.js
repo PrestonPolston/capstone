@@ -26,6 +26,61 @@ const getUserById = async (id) => {
   }
 };
 
+// get all user information by userId
+const getUserInfoById = async (userId) => {
+  const userData = await prisma.users.findUnique({
+    where: { id: userId },
+    include: {
+      preferences: true,
+      userInformation: true,
+      wishlists: true,
+      Review: {
+        select: {
+          id: true,
+          content: true,
+          rating: true,
+          createdAt: true,
+          product: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      },
+      Order: {
+        include: {
+          products: {
+            select: {
+              id: true,
+              name: true,
+              price: true,
+              quantity: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  const {
+    preferences,
+    userInformation,
+    wishlists,
+    Review,
+    Order,
+    ...userDetails
+  } = userData;
+  return {
+    userDetails,
+    preferences,
+    userInformation,
+    wishlists,
+    reviews: Review,
+    orders: Order,
+  };
+};
+
 // create new user
 const createNewUser = async (req) => {
   const { username, password, firstName, lastName, email, admin } = req.body;
@@ -257,6 +312,7 @@ const deleteUserPreferences = async (userId) => {
 module.exports = {
   getAllUsers,
   getUserById,
+  getUserInfoById,
   createNewUser,
   loginUser,
   logoutUser,

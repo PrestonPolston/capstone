@@ -4,6 +4,7 @@ const prisma = new PrismaClient();
 const {
   getAllUsers,
   getUserById,
+  getUserInfoById,
   loginUser,
   logoutUser,
   createNewUser,
@@ -24,6 +25,19 @@ router.get("/user", isLoggedIn, async (req, res, next) => {
     res.send(users);
   } catch (err) {
     next(err);
+  }
+});
+
+// get all information associated with userId
+router.get("/user/:userId/allinfo", async (req, res) => {
+  const userId = Number(req.params.userId);
+
+  try {
+    const userInfo = await getUserInfoById(userId);
+    res.json(userInfo);
+  } catch (error) {
+    console.error("Error fetching user information:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 

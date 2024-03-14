@@ -18,7 +18,9 @@ const createUserPreferences = async (userId, preferencesData) => {
 
 const updateUserPreferences = async (userId, preferencesData) => {
   return await prisma.userPreferences.update({
-    where: { userId: Number(userId) },
+    where: {
+      userId: Number(userId),
+    },
     data: preferencesData,
   });
 };

@@ -89,11 +89,26 @@ const getProductReview = async (productId) => {
   }
 };
 
+// get review by userId
+const getUserReviews = async (userId) => {
+  try {
+    const userReviews = await prisma.review.findMany({
+      where: {
+        userId: Number(userId),
+      },
+    });
+    return userReviews;
+  } catch (error) {
+    console.error("Error fetching user reviews:", error);
+    return null;
+  }
+};
+
 // create review
 const createProductReview = async (productId, userId, reviewData) => {
   try {
     const reviewDataToCreate = {
-      productId: parseInt(productId),
+      productId: Number(productId),
       ...reviewData,
     };
     if (userId) {
@@ -108,18 +123,28 @@ const createProductReview = async (productId, userId, reviewData) => {
   }
 };
 
-// update a review
-const updateReview = async (reviewId, reviewData) => {
-  return await prisma.review.update({
-    where: { id: parseInt(reviewId) },
-    data: reviewData,
-  });
+// update a review and fetch user reviews
+const updateReview = async (reviewId, reviewData, userId) => {
+  try {
+    await prisma.review.update({
+      where: { id: Number(reviewId) },
+      data: reviewData,
+    });
+
+    const userReviews = await prisma.review.findMany({
+      where: { userId: Number(userId) },
+    });
+
+    return userReviews;
+  } catch (err) {
+    throw err;
+  }
 };
 
 // delete a review
 const deleteReview = async (reviewId) => {
   return await prisma.review.delete({
-    where: { id: parseInt(reviewId) },
+    where: { id: Number(reviewId) },
   });
 };
 
@@ -130,6 +155,7 @@ module.exports = {
   updateProduct,
   deleteProduct,
   getProductReview,
+  getUserReviews,
   createProductReview,
   updateReview,
   deleteReview,

@@ -22,6 +22,7 @@ router.get("/user/:userId/information", async (req, res, next) => {
 router.post("/user/:userId/information", async (req, res) => {
   const userId = req.params.userId;
   const informationData = req.body;
+  console.log(informationData);
   const newInformation = await createUserInformation(userId, informationData);
   res.status(201).json(newInformation);
 });
