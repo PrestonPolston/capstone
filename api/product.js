@@ -105,8 +105,9 @@ router.post("/products/:productId/reviews", async (req, res, next) => {
 router.put("/products/:productId/reviews/:reviewId", async (req, res, next) => {
   try {
     const { reviewId } = req.params;
-    const updatedReview = await updateReview(reviewId, req.body);
-    res.status(200).json(updatedReview);
+    const { userId } = req.body;
+    const updatedReviews = await updateReview(reviewId, req.body, userId);
+    res.status(200).json(updatedReviews);
   } catch (err) {
     next(err);
   }

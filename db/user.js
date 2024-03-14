@@ -34,11 +34,51 @@ const getUserInfoById = async (userId) => {
       preferences: true,
       userInformation: true,
       wishlists: true,
+      Review: {
+        select: {
+          id: true,
+          content: true,
+          rating: true,
+          createdAt: true,
+          product: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      },
+      Order: {
+        include: {
+          products: {
+            select: {
+              id: true,
+              name: true,
+              price: true,
+              quantity: true,
+            },
+          },
+        },
+      },
     },
   });
 
-  const { preferences, userInformation, wishlists, ...userDetails } = userData;
-  return { userDetails, preferences, userInformation, wishlists };
+  const {
+    preferences,
+    userInformation,
+    wishlists,
+    Review,
+    Order,
+    ...userDetails
+  } = userData;
+  return {
+    userDetails,
+    preferences,
+    userInformation,
+    wishlists,
+    reviews: Review,
+    orders: Order,
+  };
 };
 
 // create new user
