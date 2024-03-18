@@ -31,7 +31,6 @@ router.get("/user", async (req, res, next) => {
 // get all information associated with userId
 router.get("/user/:userId/allinfo", async (req, res) => {
   const userId = Number(req.params.userId);
-
   try {
     const userInfo = await getUserInfoById(userId);
     res.json(userInfo);
