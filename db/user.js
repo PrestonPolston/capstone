@@ -29,7 +29,7 @@ const getUserById = async (id) => {
 // get all user information by userId
 const getUserInfoById = async (userId) => {
   const userData = await prisma.users.findUnique({
-    where: { id: userId },
+    where: { id: Number(userId) },
     include: {
       preferences: true,
       userInformation: true,
@@ -154,6 +154,12 @@ async function loginUser(username, password) {
     throw new Error("User not found");
   }
 
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+
+  if (!isPasswordValid) {
+    throw new Error("Invalid e-mail or password");
+  }
+
   try {
     await cleanupTokensForUser(user.id);
 
@@ -169,7 +175,11 @@ async function loginUser(username, password) {
     await createToken(user.id, token, expirationDate, currentDate);
 
     return {
-      user: { id: user.id, username: user.username, admin: user.admin },
+      user: {
+        id: user.id,
+        username: user.username,
+        admin: user.admin,
+      },
       token,
     };
   } catch (error) {

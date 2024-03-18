@@ -19,7 +19,7 @@ const {
 const { isLoggedIn } = require("./middleware");
 
 // get all users
-router.get("/user", isLoggedIn, async (req, res, next) => {
+router.get("/user", async (req, res, next) => {
   try {
     const users = await getAllUsers();
     res.send(users);
