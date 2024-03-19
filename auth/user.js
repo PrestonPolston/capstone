@@ -31,7 +31,6 @@ router.get("/user", async (req, res, next) => {
 // get all information associated with userId
 router.get("/user/:userId/allinfo", async (req, res) => {
   const userId = Number(req.params.userId);
-
   try {
     const userInfo = await getUserInfoById(userId);
     res.json(userInfo);
@@ -84,6 +83,7 @@ router.delete("/user/logout", async (req, res, next) => {
 router.post("/user/register", async (req, res, next) => {
   try {
     const user = await createNewUser(req);
+    console.log(user);
     res.status(201).send(user);
   } catch (err) {
     next(err);
@@ -128,6 +128,7 @@ router.post("/user/:userId/preferences", async (req, res, next) => {
     const { userId } = req.params;
     const preferencesData = req.body;
     const newPreferences = await createUserPreferences(userId, preferencesData);
+    console.log(newPreferences);
     res.status(201).json(newPreferences);
   } catch (err) {
     next(err);
