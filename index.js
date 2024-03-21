@@ -5,7 +5,7 @@ const PORT = 3000;
 
 app.use(express.json());
 
-app.use(express.json({ limit: "200mb" }));
+app.use(express.json({ limit: "400mb" }));
 
 const cors = require("cors");
 app.use(cors());
