@@ -1,6 +1,20 @@
-# capstone
+##backend for capstone E-Commerce app
+# Capstone
 
-backend for capstone E-Commerce app
+## Overview
+
+This repository contains the backend for the **Capstone E-Commerce App**. It is built with **Node.js** and utilizes **Prisma** for database management. The backend provides APIs for user authentication, product management, and order handling.
+
+## Getting Started
+
+To set up the backend environment, follow these steps:
+
+### Prerequisites
+
+- Ensure you have **Node.js** and **npm** installed on your machine.
+- Have PostgreSQL installed and running.
+
+### Installation
 
 touch .env
 
